@@ -48,6 +48,41 @@
         if (active !== null) requestAnimationFrame(render);
     }
 
+    // Empêche la mise en veille de l'écran tant qu'un compteur tourne
+    let wakeLock = null;
+    let wakeLockPending = false;
+
+    async function requestWakeLock() {
+        if (!('wakeLock' in navigator) || wakeLock || wakeLockPending) return;
+        wakeLockPending = true;
+        try {
+            const lock = await navigator.wakeLock.request('screen');
+            if (active === null) {
+                lock.release();
+                return;
+            }
+            wakeLock = lock;
+            lock.addEventListener('release', () => {
+                if (wakeLock === lock) wakeLock = null;
+            });
+        } catch (err) {
+            // Indisponible (contexte non sécurisé, économie d'énergie, etc.)
+        } finally {
+            wakeLockPending = false;
+        }
+    }
+
+    function releaseWakeLock() {
+        if (!wakeLock) return;
+        wakeLock.release().catch(() => {});
+        wakeLock = null;
+    }
+
+    // Le verrou est perdu quand la page passe en arrière-plan : on le redemande au retour
+    document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible' && active !== null) requestWakeLock();
+    });
+
     function setActive(next) {
         if (active !== null) elapsed[active] += performance.now() - startedAt;
         active = next;
@@ -57,6 +92,8 @@
             btn.classList.toggle('is-speaking', active === i);
             btn.setAttribute('aria-pressed', String(active === i));
         });
+        if (active !== null) requestWakeLock();
+        else releaseWakeLock();
         render();
     }
 
