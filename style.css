@@ -1,0 +1,144 @@
+:root {
+    --user-1-hue: 255; /* teinte oklch de l'utilisateur 1 */
+    --user-2-hue: 55;  /* teinte oklch de l'utilisateur 2 */
+    --black: #000;
+    --white: #fff;
+    --gap: 16px;
+}
+
+* { box-sizing: border-box; margin: 0; }
+
+html, body { height: 100%; }
+
+body {
+    background: var(--white);
+    color: var(--black);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.page {
+    height: 100%;
+    padding: var(--gap);
+    display: flex;
+    gap: var(--gap);
+}
+
+/* ---------- Jauge ---------- */
+.gauge {
+    --share-1: 0.5; /* part du temps de parole de l'utilisateur 1 */
+    --share-2: 0.5; /* part du temps de parole de l'utilisateur 2 */
+    --allocated: 0; /* part de la jauge allouée aux deux utilisateurs */
+    width: 16px;
+    flex: none;
+    display: flex;
+    flex-direction: column;
+}
+
+.gauge__bar {
+    flex: none;
+    background: var(--black);
+    transition: height 1s ease-out;
+}
+/* 8px de hauteur d'affichage + 8px qui chevauchent la forme voisine */
+.gauge__bar--top {
+    height: calc(100% * var(--allocated) * var(--share-1) + 16px);
+    margin-bottom: -8px;
+    border-radius: 8px;
+}
+.gauge__bar--bottom {
+    height: calc(100% * var(--allocated) * var(--share-2) + 16px);
+    margin-top: -8px;
+    border-radius: 8px;
+}
+
+.gauge__shape {
+    flex: none;
+    display: block;
+    fill: var(--black);
+}
+
+.gauge__line {
+    flex: 1;
+    margin: -8px 0; /* dépasse de 8px en haut et en bas pour chevaucher les formes */
+    width: 4px;
+    align-self: center;
+    background: var(--black);
+}
+
+/* ---------- Zone des boutons ---------- */
+.controls {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap);
+}
+
+.user-zone {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+}
+
+.user-btn {
+    position: relative;
+    flex: 1;
+    border: 0;
+    border-radius: 8px;
+    font: inherit;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--white);
+    background:
+        radial-gradient(circle at 28% 32%, oklch(0.84 0.12 calc(var(--hue) + 28) / 0.9), transparent 38%),
+        radial-gradient(circle at 72% 68%, oklch(0.62 0.16 calc(var(--hue) - 22) / 0.8), transparent 40%),
+        radial-gradient(circle at 70% 25%, oklch(0.8 0.15 calc(var(--hue) + 50) / 0.7), transparent 35%),
+        radial-gradient(circle at 25% 75%, oklch(0.7 0.14 calc(var(--hue) - 45) / 0.7), transparent 38%),
+        oklch(0.72 0.1 var(--hue));
+}
+.user-btn--1 { --hue: var(--user-1-hue); }
+.user-btn--2 { --hue: var(--user-2-hue); }
+
+.user-btn.is-speaking {
+    outline: 4px solid var(--black);
+    color: var(--black);
+}
+
+.percent {
+    position: absolute;
+    left: 16px; /* 16px du coin du bouton */
+    font-size: 16px;
+    line-height: 1;
+    opacity: 0.75;
+}
+.user-btn--1 .percent { top: 16px; }
+.user-btn--2 .percent { bottom: 16px; }
+
+.time {
+    font-style: italic;
+    opacity: 0.75;
+    font-size: 64px;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
+.center-zone {
+    display: flex;
+    justify-content: center;
+}
+
+.sources-btn {
+    font: inherit;
+    font-size: 32px;
+    line-height: 32px;
+    padding: 16px;
+    border: 0;
+    border-radius: 8px;
+    background: var(--black);
+    color: var(--white);
+    cursor: pointer;
+    width: fit-content;
+}

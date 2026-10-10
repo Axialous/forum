@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Débat</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="page">
+        <div class="gauge" id="gauge" aria-hidden="true">
+            <div class="gauge__bar gauge__bar--top" id="bar1"></div>
+            <svg class="gauge__shape" viewBox="0 0 16 13" width="16" height="13">
+                <path d="M3 6.24537C1.17108 4.77925 0 2.52638 0 0H16C16 2.52639 14.8289 4.77925 13 6.24537C11.1711 7.71149 10 9.96435 10 12.4907V13H6V12.4907C6 9.96435 4.82893 7.71149 3 6.24537Z"/>
+            </svg>
+            <div class="gauge__line"></div>
+            <svg class="gauge__shape" viewBox="0 0 16 13" width="16" height="13">
+                <path d="M6 0.509278L6 0H10L10 0.509277C10 3.03566 11.1711 5.28852 13 6.75464C14.8289 8.22076 16 10.4736 16 13L0 13C-2.20864e-07 10.4736 1.17108 8.22076 3 6.75464C4.82893 5.28852 6 3.03566 6 0.509278Z"/>
+            </svg>
+            <div class="gauge__bar gauge__bar--bottom" id="bar2"></div>
+        </div>
+
+        <main class="controls">
+            <div class="user-zone">
+                <button class="user-btn user-btn--1" id="btn1" type="button" aria-pressed="false">
+                    <span class="percent" id="pct1">50%</span>
+                    <span class="time" id="time1">00 : 00</span>
+                </button>
+            </div>
+
+            <div class="center-zone">
+                <button class="sources-btn" type="button">Sources</button>
+            </div>
+
+            <div class="user-zone">
+                <button class="user-btn user-btn--2" id="btn2" type="button" aria-pressed="false">
+                    <span class="percent" id="pct2">50%</span>
+                    <span class="time" id="time2">00 : 00</span>
+                </button>
+            </div>
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
